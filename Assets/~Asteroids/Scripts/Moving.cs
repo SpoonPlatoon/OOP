@@ -28,7 +28,7 @@ namespace Asteroids
             // Copy Velocity inside smaller variable
             Vector3 vel = rigid.velocity;
             //Check if velocity reaches greater than maxVelocity
-            if(vel.magnitude > maxVelocity)
+            if (vel.magnitude > maxVelocity)
             {
                 //cap the velocity
                 vel = vel.normalized * maxVelocity;
@@ -39,8 +39,14 @@ namespace Asteroids
         //Accelerates the player in a given direction
         public void Accelerate(Vector3 direction)
         {
-           rigid.AddForce(direction * acceleration);
+            rigid.AddForce(direction * acceleration);
         }
+
+
+        // public void Rotate(float Rotation)
+        // {
+        //    rigid.rotation += Rotation * rotationSpeed * Time.deltaTime;
+        // }
 
         public void RotateLeft()
         {
@@ -49,7 +55,15 @@ namespace Asteroids
 
         public void RotateRight()
         {
-            rigid.rotation -= rotationSpeed * Time.deltaTime;
+            rigid.rotation += -rotationSpeed * Time.deltaTime;
+        }
+
+        public void Stop()
+        {
+            if (Input.GetKey(KeyCode.S))
+            {
+                rigid.velocity = Vector3.zero;
+            }
         }
     }
 }
