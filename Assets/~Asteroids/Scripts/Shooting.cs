@@ -7,25 +7,35 @@ namespace Asteroids
     public class Shooting : MonoBehaviour
     {
         public GameObject bulletPrefab;
-        public float bulletSpeed = 5f;
+        public float bulletSpeed = 20f;
+        public float shootRate = 0.2f;
+
+        public float shootTimer = 0f;
 
         public Transform spawnPoint;
 
-       public void Fire(Vector3 direction)
-            {
-            // Make an instance of the bullet prefab
-            GameObject clone = Instantiate(bulletPrefab);
-            // Set position of clone spawn point
-            clone.transform.position = spawnPoint.position;
-
-            float angle = Mathf.Atan2(direction.y, direction.x);
-            float degrees = angle * Mathf.Rad2Deg;
-
-            // Get rigidbody from bullet clone
+        void Shoot()
+        {
+            GameObject clone = Instantiate(bulletPrefab, transform.position, transform.rotation);
             Rigidbody2D rigid = clone.GetComponent<Rigidbody2D>();
-            rigid.rotation = degrees;
-            // Add force in the direction
-            rigid.AddForce(direction * bulletSpeed, ForceMode2D.Impulse);
+            rigid.AddForce(transform.up * bulletSpeed, ForceMode2D.Impulse);
+        }
+      
+        void Update()
+        {
+            //SET shootTimer = shootTimer + deltaTime
+            shootTimer += Time.deltaTime;
+            //IF shootTimer >= shootRate
+            if (shootTimer >= shootRate)
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    //Call Shoot()
+                    Shoot();
+                    //SET shootTimer = 0
+                    shootTimer = 0f;
+                }
+            }
         }
     }
 }

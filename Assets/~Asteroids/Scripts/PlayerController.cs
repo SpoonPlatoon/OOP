@@ -17,21 +17,12 @@ namespace Asteroids
 
         void Update()
         {
-            Shoot();
             Movement();
         }
         #endregion
 
         #region Custom Functions
-        void Shoot()
-        {
-            // Check if space is pressed
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                // Fire!
-                shoot.Fire(transform.up);
-            }
-        }
+        
         void Movement()
         {
              float inputV = Input.GetAxisRaw("Vertical");
