@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -104,19 +104,114 @@ namespace Minesweeper2D
 
         void Update()
         {
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction);
-            if (hit.collider != null)
+            if(Input.GetMouseButton(0))
             {
-                Tile hitTile = hit.collider.GetComponent<Tile>();
-                if (hitTile != null)
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+                //did the raycast hit something?
+                if(hit.collider != null)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    Tile hitTile = hit.collider.GetComponent<Tile>();
+                    if(hitTile != null)
                     {
-                        int adjacentMines = GetAdjacentMineCount(hitTile);
-                        hitTile.reveal(adjacentMines);
+                        SelectTile(hitTile);
                     }
                 }
+            }
+
+        }
+
+        void FFuncover(int x, int y, bool[,] visited)
+        {
+            //is x and y within bounds of the grid
+            if( x >= 0 && y >= 0 && x < width && y < height)
+            {
+                //have these coordinates been visited?
+                if (visited[x, y])
+                    return;
+                //Reveal tile in that x and y coordinate
+                Tile tile = tiles[x, y];
+                int adjacentMines = GetAdjacentMineCount(tile);
+                tile.reveal(adjacentMines);
+
+                //if there were no adjacent mines around that tile
+                if(adjacentMines == 0)
+                {
+                    //this tile has been visited
+                    visited[x, y] = true;
+                    //visit all other tiles around this tile
+                    FFuncover(x - 1, y, visited);
+                    FFuncover(x + 1, y, visited);
+                    FFuncover(x, y - 1, visited);
+                    FFuncover(x, y + 1, visited);
+                }
+            }
+        }
+
+        void UncoverMines(int mineState = 0)
+        {
+            //Loop though 2D array
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Tile tile = tiles[x, y];
+                    //Check if tile is a mine
+                    if(tile.isMine)
+                    {
+                        //Reveal that tile
+                        int adjacentMines = GetAdjacentMineCount(tile);
+                        tile.reveal(adjacentMines, mineState);
+                    }
+
+                }
+            }
+        }
+
+        bool NoMoreEmptyTiles()
+        {
+            //set empty tile count to zero
+            int emptyTileCount = 0;
+            //loop through 2D array
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Tile tile = tiles[x, y];
+                    //if tile is NOT revealed AND NOT a mine
+                    if(!tile.isRevealed && !tile.isMine)
+                    {
+                        //we found an empty tile!
+                        emptyTileCount += 1;
+                    }
+                }
+            }
+            return emptyTileCount == 0;
+        }
+
+        void SelectTile(Tile selected)
+        {
+            int adjacentMines = GetAdjacentMineCount(selected);
+            selected.reveal(adjacentMines);
+
+            //is the selected tile a mine?
+            if (selected.isMine)
+            {
+                //Uncover all mines - with defult loss state '0'
+                UncoverMines();
+                //Lose
+            }
+            else if (adjacentMines == 0)
+            {
+                int x = selected.x;
+                int y = selected.y;
+                //Then use flood fill to uncover all adjacent mines
+                FFuncover(x, y, new bool[width, height]);
+            }
+            if(NoMoreEmptyTiles())
+            {
+                UncoverMines(1);
             }
         }
     }
