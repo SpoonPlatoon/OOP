@@ -2,26 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaddleScripts : MonoBehaviour {
-
-    private Animator anim;
-
-	// Use this for initialization
-	void Start ()
+namespace HundredBalls
+{
+    public class PaddleScripts : MonoBehaviour
     {
-        anim = GetComponent<Animator>();	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	    if(Input.GetKey(KeyCode.DownArrow))
+
+        private Animator anim;
+
+        // Use this for initialization
+        void Start()
         {
-            anim.SetBool("isOpened", true);
+            anim = GetComponent<Animator>();
         }
-        else
+
+        // Update is called once per frame
+        void Update()
         {
-            anim.SetBool("isOpened", false);
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                anim.SetBool("isOpened", true);
+            }
+            else
+            {
+                anim.SetBool("isOpened", false);
+            }
         }
-	}
+    }
 }

@@ -2,60 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BucketScript : MonoBehaviour
+namespace HundredBalls
 {
-
-    public float movementSpeed = 10.0f;
-
-    private Rigidbody2D rigid2D;
-    private Renderer[] renderers;
-
-    void Start()
+    public class BucketScript : MonoBehaviour
     {
-        rigid2D = GetComponent<Rigidbody2D>();
-        renderers = GetComponentsInChildren<Renderer>();
 
+        public float movementSpeed = 10.0f;
 
-        int rendRandom = Random.Range(0, 4);
+        private Rigidbody2D rigid2D;
+        private Renderer[] renderers;
 
-        foreach (var renderer in renderers)
+        void Start()
         {
-            renderer.material = Resources.Load("Mat" + rendRandom) as Material;
-        }
+            rigid2D = GetComponent<Rigidbody2D>();
+            renderers = GetComponentsInChildren<Renderer>();
 
-    }
 
-    void Update()
-    {
-        HandlePosition();
-        HandleBoundary();    
-    }
+            int rendRandom = Random.Range(0, 4);
 
-    void HandlePosition()
-    {
-        rigid2D.velocity = Vector3.left * movementSpeed;
-    }
-
-    void HandleBoundary()
-    {
-        Vector3 transformPos = transform.position;
-        Vector3 viewportPos = Camera.main.WorldToViewportPoint(transformPos);
-        if(IsVisible() == false && viewportPos.x < 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    bool IsVisible()
-    {
-        foreach (var renderer in renderers)
-        {
-            if (renderer.isVisible)
+            foreach (var renderer in renderers)
             {
-                return true;
+                renderer.material = Resources.Load("Mat" + rendRandom) as Material;
+            }
+
+        }
+
+        void Update()
+        {
+            HandlePosition();
+            HandleBoundary();
+        }
+
+        void HandlePosition()
+        {
+            rigid2D.velocity = Vector3.left * movementSpeed;
+        }
+
+        void HandleBoundary()
+        {
+            Vector3 transformPos = transform.position;
+            Vector3 viewportPos = Camera.main.WorldToViewportPoint(transformPos);
+            if (IsVisible() == false && viewportPos.x < 0)
+            {
+                Destroy(gameObject);
             }
         }
-        return false;
-    }
 
+        bool IsVisible()
+        {
+            foreach (var renderer in renderers)
+            {
+                if (renderer.isVisible)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    }
 }

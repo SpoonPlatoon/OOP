@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace HundredBalls
+    {
 public class GameManager : MonoBehaviour {
 
     public static int score;
@@ -16,7 +18,7 @@ public class GameManager : MonoBehaviour {
 
     void Update()
     {
-        if(score > goal)
+        if (score > goal)
         {
             Time.timeScale = 10;
         }
@@ -24,7 +26,7 @@ public class GameManager : MonoBehaviour {
 
     void lateUpdate()
     {
-        if(score == goal)
+        if (score == goal)
         {
             goal++;
         }
@@ -38,4 +40,5 @@ public class GameManager : MonoBehaviour {
         GUI.Label(new Rect(scrW * 0.25f, scrH * 1f, scrW * 2f, scrH * 0.5f), "Goal: " + goal + " Points");
 
     }
+}
 }

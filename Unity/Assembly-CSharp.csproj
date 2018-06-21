@@ -53,6 +53,8 @@
      <Compile Include="Assets\~Asteroids\Scripts\Player\PlayerController.cs" />
      <Compile Include="Assets\~Asteroids\Scripts\Player\Shooting.cs" />
      <Compile Include="Assets\~Asteroids\Scripts\ScreenWrap.cs" />
+     <Compile Include="Assets\~Breakout\Scripts\Ball.cs" />
+     <Compile Include="Assets\~Breakout\Scripts\Paddle.cs" />
      <Compile Include="Assets\~HundredBalls\Scripts\BallScript.cs" />
      <Compile Include="Assets\~HundredBalls\Scripts\BucketScript.cs" />
      <Compile Include="Assets\~HundredBalls\Scripts\GameManager.cs" />

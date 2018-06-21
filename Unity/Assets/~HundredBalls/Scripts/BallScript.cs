@@ -2,31 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallScript : MonoBehaviour {
-	
-	// Update is called once per frame
-	void Update () {
-        HandleBoundry();
-	}
-
-    void HandleBoundry()
+namespace HundredBalls
+{
+    public class BallScript : MonoBehaviour
     {
-        Vector3 transformPos = transform.position;
-        Vector3 viewportPos = Camera.main.WorldToViewportPoint(transformPos);
 
-        if(viewportPos.y < 0)
+        // Update is called once per frame
+        void Update()
         {
-            GameManager.score -= 1;
-            Destroy(gameObject);
+            HandleBoundry();
         }
-    }
 
-    void OnTriggerEnter2D(Collider2D other2D)
-    {
-        if(other2D.CompareTag("Bucket"))
+        void HandleBoundry()
         {
-            GameManager.score += 3;
-            Destroy(gameObject);
+            Vector3 transformPos = transform.position;
+            Vector3 viewportPos = Camera.main.WorldToViewportPoint(transformPos);
+
+            if (viewportPos.y < 0)
+            {
+                GameManager.score -= 1;
+                Destroy(gameObject);
+            }
+        }
+
+        void OnTriggerEnter2D(Collider2D other2D)
+        {
+            if (other2D.CompareTag("Bucket"))
+            {
+                GameManager.score += 3;
+                Destroy(gameObject);
+            }
         }
     }
 }

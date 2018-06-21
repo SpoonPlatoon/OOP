@@ -2,41 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnerScript : MonoBehaviour
+namespace HundredBalls
 {
-
-    public GameObject[] prefabs = null;
-    public float spawnRadius = 5.0f;
-    public float spawnRate = 1.0f;
-    private float spawnFactor = 0.0f;
- 
-    private void Update()
+    public class SpawnerScript : MonoBehaviour
     {
-        HandleSpawn();
-    }
 
-    void HandleSpawn()
-    {
-        spawnFactor += Time.deltaTime;
-        if (spawnFactor > spawnRate)
+        public GameObject[] prefabs = null;
+        public float spawnRadius = 5.0f;
+        public float spawnRate = 1.0f;
+        private float spawnFactor = 0.0f;
+
+        private void Update()
         {
-            int randomIndex = Random.Range(0, prefabs.Length);
-            Spawn(prefabs[randomIndex]);
-            spawnFactor = 0;
+            HandleSpawn();
         }
-    }
 
-    void Spawn(GameObject _object)
-    {
-        GameObject newObject = Instantiate(_object);
-        Vector3 randomPoint = Random.insideUnitCircle * spawnRadius;
-        newObject.transform.position = transform.position + randomPoint;
-
-        int rendRandom = Random.Range(0, 4);
-        Renderer rend = newObject.GetComponent<Renderer>();
-        if(rend != null)
+        void HandleSpawn()
         {
-            rend.material = Resources.Load("Mat" + rendRandom) as Material;
+            spawnFactor += Time.deltaTime;
+            if (spawnFactor > spawnRate)
+            {
+                int randomIndex = Random.Range(0, prefabs.Length);
+                Spawn(prefabs[randomIndex]);
+                spawnFactor = 0;
+            }
+        }
+
+        void Spawn(GameObject _object)
+        {
+            GameObject newObject = Instantiate(_object);
+            Vector3 randomPoint = Random.insideUnitCircle * spawnRadius;
+            newObject.transform.position = transform.position + randomPoint;
+
+            int rendRandom = Random.Range(0, 4);
+            Renderer rend = newObject.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                rend.material = Resources.Load("Mat" + rendRandom) as Material;
+            }
         }
     }
 }
